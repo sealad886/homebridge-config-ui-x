@@ -53,6 +53,7 @@ import { DarwinInstaller } from './platforms/darwin'
 import { FreeBSDInstaller } from './platforms/freebsd'
 import { LinuxInstaller } from './platforms/linux'
 import { Win32Installer } from './platforms/win32'
+import { TermuxInstaller } from './platforms/termux'
 
 process.title = 'hb-service'
 
@@ -112,6 +113,12 @@ export class HomebridgeServiceHelper {
       case 'freebsd':
         this.installer = new FreeBSDInstaller(this)
         break
+      case 'android':
+        // only install when using Termux on Android
+        if (process.env.PREFIX && process.env.PREFIX.includes('com.termux')) {
+          this.installer = new TermuxInstaller(this)
+          break
+        }
       default:
         this.logger(`ERROR: This command is not supported on ${platform()}.`, 'fail')
         process.exit(1)
