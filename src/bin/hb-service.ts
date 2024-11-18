@@ -114,8 +114,10 @@ export class HomebridgeServiceHelper {
         this.installer = new FreeBSDInstaller(this)
         break
       case 'android':
+        this.logger("INFO: Reached Android.", "info")
         // only install when using Termux on Android
         if (process.env.PREFIX && process.env.PREFIX.includes('com.termux')) {
+          this.logger("INFO: Reached Termux...", "info")
           this.installer = new TermuxInstaller(this)
           break
         }
